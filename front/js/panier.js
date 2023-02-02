@@ -281,7 +281,7 @@ const firstNameError = document.getElementById("firstNameErrorMsg");
 .then((response) => response.json())
 .then((data) => {
     console.log(data);
-    localStorage.clear("kanape"); 
+    //localStorage.clear("kanape"); 
     localStorage.setItem("orderId", data.orderId);
     document.location.href = "confirmation.html";
   })

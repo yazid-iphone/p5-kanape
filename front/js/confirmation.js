@@ -5,7 +5,7 @@ function confirme(){
     const nodeId = document.getElementById("orderId");
     console.log(orderId);
     nodeId.innerText=node;
-    localStorage.clear("orderId");
+    //localStorage.clear("orderId");
 }
 
 confirme();

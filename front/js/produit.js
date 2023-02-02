@@ -1,7 +1,10 @@
+let produitLocalStorage = JSON.parse(localStorage.getItem("Kanape"));
 let params = new URLSearchParams(window.location.search);
 //console.log(params)
 const productId = params.get("id");
 //console.log(productId)
+const colorSelected = document. querySelector("#colors");
+const quantiteSelected = document.querySelector("#quantity");
 const urlProduct = `http://localhost:3000/api/products/${productId}`;
 //console.log(urlProduct);
 let cardsFetch = function () {
@@ -53,8 +56,7 @@ let cardsFetch = function () {
     description.innerHTML = api.description;
 
     // Insertion des options de couleurs
-       const colorSelected = document. querySelector("#colors");
-    console.log(colorSelected);
+       
     for (let colors of api.colors){
         //console.log(colors);
         let color = document.createElement("option");
@@ -75,27 +77,37 @@ cardsFetch()
      console.log(btn_envoyer)
      btn_envoyer.addEventListener('click', (e) => {
         e.preventDefault();
+        if (quantiteSelected.value > 0 && quantiteSelected.value <=100 && quantiteSelected.value != 0){
+
+          //Recupération du choix de la couleur
+          let couleur = colorSelected.value;
+                      
+          //Recupération du choix de la quantité
+          let quantite = quantiteSelected.value;
        
        let produitList = {
             id: `${productId}`,
-            couleur:color.value,
-            quantite:selectedQuantity.value,
-            prix:`${api.price}`,
-            name:`${api.name}`,
-            alt:`${api.altTxt}`,
-            description:`${api.description}`,
-            image:`${api.imageUrl}`,
+            couleur:couleur,
+            quantite:Number(quantite),
+            //prix:`${api.price}`,
+            //name:`${api.name}`,
+            //alt:`${api.altTxt}`,
+            //description:`${api.description}`,
+           //image:`${api.imageUrl}`
+          
+        
+
         } 
 
     console.log(produitList)
    // produitLocalStorage = JSON.parse(localStorage.getItem("Kanape"));
     //fenêtre pop-up
-    const popupConfirmation =() =>{
-        if(window.confirm(`Votre commande ${api.name}  ${api.price}$ est ajoutée au panier
-Pour consulter votre panier, cliquez sur OK`)){
-            window.location.href ="cart.html";
-        }
-    }
+   // const popupConfirmation =() =>{
+       //// if(window.confirm(`Votre commande ${api.name}  ${api.price}$ est ajoutée au panier
+//Pour consulter votre panier, cliquez sur OK`)){
+            //window.location.href ="cart.html";
+       // }
+    //}
 
        //let produitLocalStorage = JSON.parse(localStorage.getItem("Kanape"));
        if ( produitLocalStorage ) {
@@ -107,23 +119,23 @@ Pour consulter votre panier, cliquez sur OK`)){
             found.quantite = newQuantite;
             //produitLocalStorage.push(produitList);
             localStorage.setItem("Kanape", JSON.stringify(produitLocalStorage));
-            popupConfirmation();
+            //popupConfirmation();
       //SI PRODUIT AVEC MEME ID ET COULEUR AUGMENTER LA QUANTITE
             } else {
             produitLocalStorage.push(produitList);
             //found.quantite += produitList.quantite;
             localStorage.setItem("Kanape", JSON.stringify(produitLocalStorage));
-            popupConfirmation();
+            //popupConfirmation();
             }
       
             } else {
             produitLocalStorage= [];
             produitLocalStorage.push(produitList);
             localStorage.setItem("Kanape", JSON.stringify(produitLocalStorage));
-            popupConfirmation();
+            //popupConfirmation();
             } 
       
-    
+          }
  //localStorage.clear("kanape"); 
 
 });
