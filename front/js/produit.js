@@ -1,9 +1,9 @@
 let params = new URLSearchParams(window.location.search);
-console.log(params)
+//console.log(params)
 const productId = params.get("id");
-console.log(productId)
+//console.log(productId)
 const urlProduct = `http://localhost:3000/api/products/${productId}`;
-console.log(urlProduct);
+//console.log(urlProduct);
 let cardsFetch = function () {
     fetch(urlProduct)
     
@@ -11,36 +11,65 @@ let cardsFetch = function () {
       .then((api) => { response = api;
        console.log(api);
         // get data image
-        let img = document.querySelector(".item__img");
-        img.innerHTML = `<img src="${api.imageUrl}" alt="${api.altTxt}">`;
+            
+            ///let img = document.querySelector(".item__img");
+            ///img.innerHTML = `<img src="${api.imageUrl}" alt="${api.altTxt}">`;
         // data.name and title
        // let name = document.getElementById("title");
         //name.innerHTML = data.name;
-        let title = document.querySelector("title");
-        title.innerHTML = `${api.name}`;
+            /// let title = document.querySelector("title");
+            /// title.innerHTML = `${api.name}`;
         // price
-        let price = document.getElementById("price");
-       price.innerHTML = `${api.price}`;
+            /// let price = document.getElementById("price");
+            /// price.innerHTML = `${api.price}`;
         
         // description
-        let description = document.getElementById("description");
-        description.innerHTML = `${api.description}`;
+            /// let description = document.getElementById("description");
+            /// description.innerHTML = `${api.description}`;
         // colors
-        let color = document.getElementById("colors");
-        for (i = 0; i < api.colors.length; i++) {
-          color.innerHTML += `<option value="${api.colors[i]}">${api.colors[i]}</option>`;
-        }
-        let selectedQuantity = document.getElementById("quantity");
-        selectedQuantity.setAttribute("value" ,"1");
-        //console.log(selectedQuantity)
-//}
-      //);
-//}   
-produitLocalStorage = JSON.parse(localStorage.getItem("kanape"));
-//localStorage.setItem("Kanape", JSON.stringify(ProduitLocalStorage));
+            /// let color = document.getElementById("colors");
+            /// for (i = 0; i < api.colors.length; i++) {
+            ///color.innerHTML += `<option value="${api.colors[i]}">${api.colors[i]}</option>`;
+            ///}
+            ///let selectedQuantity = document.getElementById("quantity");
+            ///selectedQuantity.setAttribute("value" ,"1");
+            ///////////////////////////////////nex///////////
+
+    let img = document.createElement("img");
+    document.querySelector(".item__img").appendChild(img);
+    img.src = api.imageUrl;
+    img.alt = api.altTxt;
+
+    // Modification du titre "h1"
+    let name = document.getElementById('title');
+    name.innerHTML = api.name;
+
+    // Modification du prix
+    let price = document.getElementById('price');
+    price.innerHTML = api.price;
+
+    // Modification de la description
+    let description = document.getElementById('description');
+    description.innerHTML = api.description;
+
+    // Insertion des options de couleurs
+       const colorSelected = document. querySelector("#colors");
+    console.log(colorSelected);
+    for (let colors of api.colors){
+        //console.log(colors);
+        let color = document.createElement("option");
+        document.querySelector("#colors").appendChild(color);
+        color.value = colors;
+        color.innerHTML = colors;
+    }
+    
+        //console.log(api.color)
  
-  
-//cardsFetch();
+//produitLocalStorage = JSON.parse(localStorage.getItem("kanape"));
+  });
+}
+        
+cardsFetch()
 //function addToCart() {
      let btn_envoyer=document.getElementById("addToCart");
      console.log(btn_envoyer)
@@ -98,8 +127,9 @@ Pour consulter votre panier, cliquez sur OK`)){
  //localStorage.clear("kanape"); 
 
 });
-      });
+     // }
+     // );
 
-}
+//}
 //localStorage.clear("kanape"); 
-cardsFetch()
+//cardsFetch()
