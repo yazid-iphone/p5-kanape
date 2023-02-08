@@ -1,3 +1,5 @@
+
+
 let produitLocalStorage = JSON.parse(localStorage.getItem("Kanape"));
 
 let cart = document.getElementById("cart__items");
