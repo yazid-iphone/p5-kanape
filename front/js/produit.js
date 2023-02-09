@@ -58,6 +58,7 @@ let cardsFetch = function () {
 
           //Recupération du choix de la quantité
           let quantite = quantiteSelected.value;
+          
 
           let produitList = {
             id: `${productId}`,
@@ -115,6 +116,8 @@ let cardsFetch = function () {
             localStorage.setItem("kanape", JSON.stringify(produitLocalStorage));
             popupConfirmation();
           }
+        }else{
+          alert("veuiller choisir une qtt et une couleur")
         }
         //localStorage.clear("kanape");
       });
