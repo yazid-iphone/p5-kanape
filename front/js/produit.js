@@ -63,15 +63,15 @@ let cardsFetch = function () {
             id: `${productId}`,
             couleur: couleur,
             quantite: Number(quantite),
-            prix: api.price,
-            name: api.name,
-            alt: api.altTxt,
-            description: api.description,
-            image: api.imageUrl,
+            //prix: api.price,
+            //name: api.name,
+            //alt: api.altTxt,
+            //description: api.description,
+            //image: api.imageUrl,
           };
 
           console.log(produitList);
-          produitLocalStorage = JSON.parse(localStorage.getItem("Kanape"));
+          produitLocalStorage = JSON.parse(localStorage.getItem("kanape"));
           //fenêtre pop-up
           const popupConfirmation = () => {
             if (
@@ -95,7 +95,7 @@ let cardsFetch = function () {
               found.quantite = newQuantite;
 
               localStorage.setItem(
-                "Kanape",
+                "kanape",
                 JSON.stringify(produitLocalStorage)
               );
               popupConfirmation();
@@ -104,7 +104,7 @@ let cardsFetch = function () {
               produitLocalStorage.push(produitList);
 
               localStorage.setItem(
-                "Kanape",
+                "kanape",
                 JSON.stringify(produitLocalStorage)
               );
               popupConfirmation();
@@ -112,7 +112,7 @@ let cardsFetch = function () {
           } else {
             produitLocalStorage = [];
             produitLocalStorage.push(produitList);
-            localStorage.setItem("Kanape", JSON.stringify(produitLocalStorage));
+            localStorage.setItem("kanape", JSON.stringify(produitLocalStorage));
             popupConfirmation();
           }
         }

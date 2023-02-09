@@ -1,6 +1,4 @@
-
-
-let produitLocalStorage = JSON.parse(localStorage.getItem("Kanape"));
+let produitLocalStorage = JSON.parse(localStorage.getItem("kanape"));
 
 let cart = document.getElementById("cart__items");
 
@@ -112,7 +110,7 @@ function Supprimer() {
 
       //Alerte produit supprimé et refresh
       alert("Ce produit a bien été supprimé du panier");
-      //location.reload();
+      location.reload();
     });
   }
   //}
@@ -177,7 +175,7 @@ function moreAndLess() {
       let recalculer = document.getElementById("totalQuantity");
       recalculer.innerHTML += result.quantite;
       localStorage.setItem("kanape", JSON.stringify(produitLocalStorage));
-      //location.reload();
+      window.location.reload();
     });
   }
 }
@@ -300,7 +298,7 @@ btn_commander.addEventListener("click", (event) => {
       console.log(data);
       localStorage.clear("kanape");
       localStorage.setItem("orderId", data.orderId);
-       document.location.href = "confirmation.html";
+      document.location.href = "confirmation.html";
     })
     .catch((err) => {
       alert("Problème avec fetch : " + err.message);
