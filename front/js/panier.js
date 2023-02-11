@@ -1,105 +1,206 @@
 let produitLocalStorage = JSON.parse(localStorage.getItem("kanape"));
-
 let cart = document.getElementById("cart__items");
+////
+/*let colorPanier = produitLocalStorage[i].couleur;
+let idPanier = produitLocalStorage[i].id;
+let quantityPanier = produitLocalStorage[i].quantite;*/
+let panier = [];
 
 function getCart() {
   if (produitLocalStorage === null || produitLocalStorage == 0) {
     let empty = `<h1>Votre panier est vider ajouter des articles</1>`;
     cart.innerHTML += empty;
   } else {
-    for (let i = 0; i < produitLocalStorage.length; i++) {
-      let article = document.createElement("article");
-      document.querySelector("#cart__items").appendChild(article);
-      article.className = "cart__item";
-      article.setAttribute("data-id", produitLocalStorage[i].id);
-      article.setAttribute("data-color", produitLocalStorage[i].couleur);
-      // Insertion de l'élément "div"
-      let divImg = document.createElement("div");
-      article.appendChild(divImg);
-      divImg.className = "cart__item__img";
+    fetch("http://localhost:3000/api/products")
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        for (let i = 0; i < produitLocalStorage.length; i++) {
+          let colorPanier = produitLocalStorage[i].couleur;
+          let idPanier = produitLocalStorage[i].id;
+          let quantityPanier = produitLocalStorage[i].quantite;
+          let panier = data.find((element) => element._id == idPanier);
+          //console.log(panier);
 
-      // Insertion de l'image
-      let productImg = document.createElement("img");
-      divImg.appendChild(productImg);
-      productImg.src = produitLocalStorage[i].image;
-      productImg.alt = produitLocalStorage[i].alt;
+          let article = document.createElement("article");
+          document.querySelector("#cart__items").appendChild(article);
+          article.className = "cart__item";
+          article.setAttribute("data-id", `${idPanier}`);
+          article.setAttribute("data-color", `${colorPanier}`);
+          // Insertion de l'élément "div"
+          let divImg = document.createElement("div");
+          article.appendChild(divImg);
+          divImg.className = "cart__item__img";
 
-      // Insertion de l'élément "div"
-      let itemContent = document.createElement("div");
-      article.appendChild(itemContent);
-      itemContent.className = "cart__item__content";
+          // Insertion de l'image
+          let productImg = document.createElement("img");
+          divImg.appendChild(productImg);
+          productImg.src = panier.imageUrl;
+          productImg.alt = panier.altTxt;
 
-      // Insertion de l'élément "div"
-      let itemContentDescription = document.createElement("div");
-      itemContent.appendChild(itemContentDescription);
-      itemContentDescription.className = "cart__item__content__description";
+          // Insertion de l'élément "div"
+          let itemContent = document.createElement("div");
+          article.appendChild(itemContent);
+          itemContent.className = "cart__item__content";
 
-      // Insertion du titre h3
-      let title = document.createElement("h2");
-      itemContentDescription.appendChild(title);
-      title.innerHTML = produitLocalStorage[i].name;
+          // Insertion de l'élément "div"
+          let itemContentDescription = document.createElement("div");
+          itemContent.appendChild(itemContentDescription);
+          itemContentDescription.className = "cart__item__content__description";
 
-      // Insertion de la couleur
-      let color = document.createElement("p");
-      title.appendChild(color);
-      color.innerHTML = produitLocalStorage[i].couleur;
-      color.style.fontSize = "20px";
+          // Insertion du titre h3
+          let title = document.createElement("h2");
+          itemContentDescription.appendChild(title);
+          title.innerHTML = panier.name;
 
-      // Insertion du prix
-      let price = document.createElement("p");
-      itemContentDescription.appendChild(price);
-      price.innerHTML =
-        produitLocalStorage[i].prix * produitLocalStorage[i].quantite + "$";
-      price.style.fontSize = "20px";
-      // Insertion de l'élément "div"
-      let itemContentSettings = document.createElement("div");
-      itemContent.appendChild(itemContentSettings);
-      itemContentSettings.className = "cart__item__content__settings";
+          // Insertion de la couleur
+          let color = document.createElement("p");
+          title.appendChild(color);
+          color.innerHTML = `${colorPanier}`;
+          color.style.fontSize = "20px";
 
-      // Insertion de l'élément "div"
-      let itemContentSettingsQuantity = document.createElement("div");
-      itemContentSettings.appendChild(itemContentSettingsQuantity);
-      itemContentSettingsQuantity.className =
-        "cart__item__content__settings__quantity";
+          // Insertion du prix
+          let price = document.createElement("p");
+          itemContentDescription.appendChild(price);
+          price.innerHTML = panier.price * `${quantityPanier}` + "$";
+          price.style.fontSize = "20px";
+          // Insertion de l'élément "div"
+          let itemContentSettings = document.createElement("div");
+          itemContent.appendChild(itemContentSettings);
+          itemContentSettings.className = "cart__item__content__settings";
 
-      // Insertion de "Qté : "
-      let productQte = document.createElement("p");
-      itemContentSettingsQuantity.appendChild(productQte);
-      productQte.innerHTML = "Qté : ";
+          // Insertion de l'élément "div"
+          let itemContentSettingsQuantity = document.createElement("div");
+          itemContentSettings.appendChild(itemContentSettingsQuantity);
+          itemContentSettingsQuantity.className =
+            "cart__item__content__settings__quantity";
 
-      // Insertion de la quantité
-      let quantity = document.createElement("input");
-      itemContentSettingsQuantity.appendChild(quantity);
-      quantity.value = produitLocalStorage[i].quantite;
-      quantity.className = "itemQuantity";
-      quantity.setAttribute("type", "number");
-      quantity.setAttribute("min", "1");
-      quantity.setAttribute("max", "100");
-      quantity.setAttribute("name", "itemQuantity");
+          // Insertion de "Qté : "
+          let productQte = document.createElement("p");
+          itemContentSettingsQuantity.appendChild(productQte);
+          productQte.innerHTML = "Qté : ";
 
-      // Insertion de l'élément "div"
-      let settingsDelete = document.createElement("div");
-      itemContentSettings.appendChild(settingsDelete);
-      settingsDelete.className = "cart__item__content__settings__delete";
+          // Insertion de la quantité
+          let quantity = document.createElement("input");
+          itemContentSettingsQuantity.appendChild(quantity);
+          quantity.value = produitLocalStorage[i].quantite;
+          quantity.className = "itemQuantity";
+          quantity.setAttribute("type", "number");
+          quantity.setAttribute("min", "1");
+          quantity.setAttribute("max", "100");
+          quantity.setAttribute("name", "itemQuantity");
+          quantity.setAttribute("value", `${quantityPanier}`);
 
-      // Insertion de "p" supprimer
-      let supprimer = document.createElement("p");
-      settingsDelete.appendChild(supprimer);
-      supprimer.className = "deleteItem";
-      supprimer.innerHTML = "Supprimer";
+          // Insertion de l'élément "div"
+          let settingsDelete = document.createElement("div");
+          itemContentSettings.appendChild(settingsDelete);
+          settingsDelete.className = "cart__item__content__settings__delete";
+
+          // Insertion de "p" supprimer
+          let supprimer = document.createElement("p");
+          settingsDelete.appendChild(supprimer);
+          supprimer.className = "deleteItem";
+          supprimer.innerHTML = "Supprimer";
+        }
+        function btnSupprimer() {
+        let supprimer = document.querySelectorAll(".deleteItem");
+       // console.log(supprimer);
+        supprimer.forEach((supprimer) => {
+          supprimer.addEventListener("click", (event) => {
+            event.preventDefault();
+            console.log(event);
+            let myArticle = supprimer.closest("article");
+           // console.log(myArticle);
+            produitLocalStorage = produitLocalStorage.filter(
+              (element) =>
+                element.id !== myArticle.dataset.id ||
+                element.couleur !== myArticle.dataset.color
+            );
+           // console.log(produitLocalStorage);
+            localStorage.setItem("kanape", JSON.stringify(produitLocalStorage));
+            alert("Ce produit va être supprimé du panier.");
+            window.location.reload();
+          });
+        });
+      }
+        btnSupprimer()
+        function calculPrice() {
+          let newPrice = 0;
+           
+          for (let m = 0; m < produitLocalStorage.length; m++) {
+              const idStorage = produitLocalStorage[m].id;
+              //console.log(idStorage)
+              const quantityStorage = produitLocalStorage[m].quantite;
+              
+              const findProducts = data.find((element) => element._id === idStorage);
+                  
+              if (findProducts) {
+                  const pricePanier = findProducts.price * quantityStorage;
+                  //console.log(pricePanier)
+                  newPrice += pricePanier;
+                     // console.log(newPrice);
+              }
+          
+          document.getElementById("totalPrice").innerText = newPrice;
+          } 
+      }
+      calculPrice()
+      function totalQuantite() {
+        let newQuantity = 0;
+        for (let k = 0; k < produitLocalStorage.length; k++) {
+            
+            newQuantity += parseInt(produitLocalStorage[k].quantite);
+        }
+            //console.log(newQuantity)
+        
+        document.getElementById("totalQuantity").innerText = newQuantity;
     }
+    totalQuantite();
+
+function moreAndLess() {
+  let input = document.querySelectorAll(".itemQuantity");
+  console.log(input);
+  for (let l = 0; l < input.length; l++) {
+    input[l].addEventListener("change", (event) => {
+      event.preventDefault();
+      console.log(event);
+      //let qttModif = produitLocalStorage[l].quantite;
+      //console.log(qttModif);
+      let qttModifValue = input[l].valueAsNumber;
+      console.log(qttModifValue);
+      let myArticle = input[l].closest("article");
+                console.log(myArticle);
+            // On récupère dans le localStorage l'élément (même id et même couleur) dont on veut modifier la quantité
+            let selectMyArticle = produitLocalStorage.find
+            ( element => element.id === myArticle.dataset.id && 
+              element.couleur === myArticle.dataset.color );
+      //console.log(result);
+      let result = parseInt(qttModifValue);
+      selectMyArticle.quantite = result;
+      let recalculer = document.getElementById("totalQuantity");
+      recalculer.innerHTML += selectMyArticle;
+      localStorage.setItem("kanape", JSON.stringify(produitLocalStorage));
+      window.location.reload();
+    });
   }
-  //}
+}
+
+moreAndLess();
+      });
+  }
 }
 getCart();
 
-function Supprimer() {
+/*function Supprimer() {
   let btn_supprimer = document.querySelectorAll(".deleteItem");
-
+//console.log(btn_supprimer)
   for (let l = 0; l < btn_supprimer.length; l++) {
     btn_supprimer[l].addEventListener("click", (event) => {
       event.preventDefault();
-      let idDelete = produitLocalStorage[l].id;
+      //console.log(event);
+      
+      let idDelete =  produitLocalStorage[l].id;
+      console.log(idDelete)
       let colorDelete = produitLocalStorage[l].couleur;
       produitLocalStorage = produitLocalStorage.filter(
         (el) => el.id !== idDelete && el.couleur !== colorDelete
@@ -112,8 +213,8 @@ function Supprimer() {
       alert("Ce produit a bien été supprimé du panier");
       location.reload();
     });
-  }
-  //}
+    }
+  
 }
 Supprimer();
 //}
@@ -124,14 +225,14 @@ function totals() {
   for (let m = 0; m < produitLocalStorage.length; m++) {
     let produitQtt = parseInt(produitLocalStorage[m].quantite);
     totalQtt.push(produitQtt);
-    console.log(totalQtt);
+    //console.log(totalQtt);
     const initialValue = 0;
     let qttProduit = totalQtt.reduce(
       (accumulator, currentValue) => accumulator + currentValue,
       initialValue
     );
     ttq.innerHTML = qttProduit;
-    console.log(qttProduit);
+    //console.log(qttProduit);
   }
 
   let final = document.querySelector("#totalPrice");
@@ -141,35 +242,35 @@ function totals() {
       produitLocalStorage[j].prix * produitLocalStorage[j].quantite
     );
     priceTotal.push(qttNumber);
-    console.log(priceTotal);
+    //console.log(priceTotal);
     const initialValue = 0;
     let qttFinal = priceTotal.reduce(
       (accumulator, currentValue) => accumulator + currentValue,
       initialValue
     );
 
-    console.log(qttFinal);
+    //console.log(qttFinal);
 
     final.innerHTML = qttFinal;
-    console.log(final);
+    //console.log(final);
   }
 }
 totals();
 function moreAndLess() {
   let input = document.querySelectorAll(".itemQuantity");
-  console.log(input);
+  //console.log(input);
   for (let k = 0; k < input.length; k++) {
     input[k].addEventListener("change", (event) => {
       event.preventDefault();
-      console.log(event);
+      //console.log(event);
       let qttModif = produitLocalStorage[k].quantite;
-      console.log(qttModif);
+      //console.log(qttModif);
       let qttModifValue = input[k].valueAsNumber;
-      console.log(qttModifValue);
+      //console.log(qttModifValue);
       const result = produitLocalStorage.find(
         (el) => el.qttModifValue !== qttModif
       );
-      console.log(result);
+      //console.log(result);
       result.quantite = qttModifValue;
       produitLocalStorage[k].quantite = result.quantite;
       let recalculer = document.getElementById("totalQuantity");
@@ -180,7 +281,7 @@ function moreAndLess() {
   }
 }
 
-moreAndLess();
+moreAndLess();*/
 function getForm() {
   const regexName = /^[a-zA-Z-\s]+$/;
   const regexMail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
@@ -272,7 +373,7 @@ btn_commander.addEventListener("click", (event) => {
     idProducts.push(produitLocalStorage[i].id);
   }
 
-  console.log(idProducts);
+  //console.log(idProducts);
 
   const form = {
     contact: {
@@ -284,7 +385,7 @@ btn_commander.addEventListener("click", (event) => {
     },
     products: idProducts,
   };
-  console.log(form);
+  //console.log(form);
   fetch("http://localhost:3000/api/products/order", {
     method: "POST",
     body: JSON.stringify(form),
@@ -295,7 +396,7 @@ btn_commander.addEventListener("click", (event) => {
   })
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
+      //console.log(data);
       localStorage.clear("kanape");
       localStorage.setItem("orderId", data.orderId);
       document.location.href = "confirmation.html";
