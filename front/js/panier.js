@@ -103,91 +103,108 @@ function getCart() {
           supprimer.innerHTML = "Supprimer";
         }
         function btnSupprimer() {
-        let supprimer = document.querySelectorAll(".deleteItem");
-       // console.log(supprimer);
-        supprimer.forEach((supprimer) => {
-          supprimer.addEventListener("click", (event) => {
-            event.preventDefault();
-            console.log(event);
-            let myArticle = supprimer.closest("article");
-           // console.log(myArticle);
-            produitLocalStorage = produitLocalStorage.filter(
-              (element) =>
-                element.id !== myArticle.dataset.id ||
-                element.couleur !== myArticle.dataset.color
-            );
-           // console.log(produitLocalStorage);
-            localStorage.setItem("kanape", JSON.stringify(produitLocalStorage));
-            alert("Ce produit va être supprimé du panier.");
-            window.location.reload();
+          let supprimer = document.querySelectorAll(".deleteItem");
+          // console.log(supprimer);
+          supprimer.forEach((supprimer) => {
+            supprimer.addEventListener("click", (event) => {
+              event.preventDefault();
+              console.log(event);
+              let myArticle = supprimer.closest("article");
+              // console.log(myArticle);
+              produitLocalStorage = produitLocalStorage.filter(
+                (element) =>
+                  element.id !== myArticle.dataset.id ||
+                  element.couleur !== myArticle.dataset.color
+              );
+              // console.log(produitLocalStorage);
+              localStorage.setItem(
+                "kanape",
+                JSON.stringify(produitLocalStorage)
+              );
+              alert("Ce produit va être supprimé du panier.");
+              window.location.reload();
+            });
           });
-        });
-      }
-        btnSupprimer()
+        }
+        btnSupprimer();
         function calculPrice() {
           let newPrice = 0;
-           
+
           for (let m = 0; m < produitLocalStorage.length; m++) {
-              const idStorage = produitLocalStorage[m].id;
-              //console.log(idStorage)
-              const quantityStorage = produitLocalStorage[m].quantite;
-              
-              const findProducts = data.find((element) => element._id === idStorage);
-                  
-              if (findProducts) {
-                  const pricePanier = findProducts.price * quantityStorage;
-                  //console.log(pricePanier)
-                  newPrice += pricePanier;
-                     // console.log(newPrice);
-              }
-          
-          document.getElementById("totalPrice").innerText = newPrice;
-          } 
-      }
-      calculPrice()
-      function totalQuantite() {
-        let newQuantity = 0;
-        for (let k = 0; k < produitLocalStorage.length; k++) {
-            
-            newQuantity += parseInt(produitLocalStorage[k].quantite);
+            const idStorage = produitLocalStorage[m].id;
+            //console.log(idStorage)
+            const quantityStorage = produitLocalStorage[m].quantite;
+
+            const findProducts = data.find(
+              (element) => element._id === idStorage
+            );
+
+            if (findProducts) {
+              const pricePanier = findProducts.price * quantityStorage;
+              //console.log(pricePanier)
+              newPrice += pricePanier;
+              // console.log(newPrice);
+            }
+
+            document.getElementById("totalPrice").innerText = newPrice;
+          }
         }
-            //console.log(newQuantity)
+        calculPrice();
+        function totalQuantite() {
+          let newQuantity = 0;
+          for (let k = 0; k < produitLocalStorage.length; k++) {
+            newQuantity += parseInt(produitLocalStorage[k].quantite);
+          }
+          //console.log(newQuantity)
+
+          document.getElementById("totalQuantity").innerText = newQuantity;
+        }
+        totalQuantite();
+
+        function moreAndLess() {
+          let changeQuantity = document.querySelectorAll(".itemQuantity");
+          console.log(changeQuantity);
+          changeQuantity.forEach((input) =>  {
+            input.addEventListener("change", (event) => {
+              event.preventDefault();
+              
+              changeQuantity = input.valueAsNumber;
+              
+              let myArticle = input.closest("article");
+              console.log(myArticle);
+              // On récupère dans le localStorage l'élément (même id et même couleur) dont on veut modifier la quantité
+              let selectMyArticle = produitLocalStorage.find(
+                (element) =>
+                  element.id === myArticle.dataset.id &&
+                  element.couleur === myArticle.dataset.color
+              );
+              console.log(selectMyArticle)
+              if(changeQuantity > 0 && changeQuantity <= 100 ){
+              let result = parseInt(changeQuantity);
+              selectMyArticle.quantite = result;
+              console.log(result)
+              
+              /*let recalculer = document.getElementById("totalQuantity");
+              console.log(recalculer)
+              recalculer.innerHTML += selectMyArticle;*/
+              localStorage.setItem(
+                "kanape",
+                JSON.stringify(produitLocalStorage)
+              );
+              }else{
+                input.value = selectMyArticle.quantite;
+              }
+              //window.location.reload();
+            });
+          })
+        }
+
+        moreAndLess();
         
-        document.getElementById("totalQuantity").innerText = newQuantity;
-    }
-    totalQuantite();
 
-function moreAndLess() {
-  let input = document.querySelectorAll(".itemQuantity");
-  console.log(input);
-  for (let l = 0; l < input.length; l++) {
-    input[l].addEventListener("change", (event) => {
-      event.preventDefault();
-      console.log(event);
-      //let qttModif = produitLocalStorage[l].quantite;
-      //console.log(qttModif);
-      let qttModifValue = input[l].valueAsNumber;
-      console.log(qttModifValue);
-      let myArticle = input[l].closest("article");
-                console.log(myArticle);
-            // On récupère dans le localStorage l'élément (même id et même couleur) dont on veut modifier la quantité
-            let selectMyArticle = produitLocalStorage.find
-            ( element => element.id === myArticle.dataset.id && 
-              element.couleur === myArticle.dataset.color );
-      //console.log(result);
-      let result = parseInt(qttModifValue);
-      selectMyArticle.quantite = result;
-      let recalculer = document.getElementById("totalQuantity");
-      recalculer.innerHTML += selectMyArticle;
-      localStorage.setItem("kanape", JSON.stringify(produitLocalStorage));
-      window.location.reload();
-    });
-  }
-}
-
-moreAndLess();
       });
   }
+
 }
 getCart();
 
@@ -282,7 +299,12 @@ function moreAndLess() {
 }
 
 moreAndLess();*/
-function getForm() {
+//function getForm() {
+  const firstName = document.getElementById("firstName");
+  const nom = document.getElementById("lastName");
+  const address = document.getElementById("address");
+  const city = document.getElementById("city");
+  const email = document.getElementById("email");
   const regexName = /^[a-zA-Z-\s]+$/;
   const regexMail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
   let form = document.querySelector(".cart__order__form");
@@ -290,10 +312,10 @@ function getForm() {
   form.firstName.addEventListener("change", function () {
     validFirstName(this);
   });
-  const validFirstName = function (prenom) {
-    let firstNameErrorMsg = prenom.nextElementSibling;
+  const validFirstName = function () {
+    let firstNameErrorMsg = firstName.nextElementSibling;
 
-    if (regexName.test(prenom.value)) {
+    if (regexName.test(firstName.value)) {
       firstNameErrorMsg.innerHTML = "";
     } else {
       firstNameErrorMsg.innerHTML = "Entrez un prenom valide.";
@@ -305,9 +327,9 @@ function getForm() {
     validLastName(this);
   });
   const validLastName = function (nom) {
-    let lastNameErrorMsg = nom.nextElementSibling;
+    let lastNameErrorMsg = lastName.nextElementSibling;
 
-    if (regexName.test(nom.value)) {
+    if (regexName.test(lastName.value)) {
       lastNameErrorMsg.innerHTML = "";
     } else {
       lastNameErrorMsg.innerHTML = "Entrez un nom valide.";
@@ -319,9 +341,9 @@ function getForm() {
     validAdress(this);
   });
   const validAdress = function (adresse) {
-    let adressErrorMsg = adresse.nextElementSibling;
+    let adressErrorMsg = address.nextElementSibling;
 
-    if (regexName.test(adresse.value)) {
+    if (regexName.test(address.value)) {
       adressErrorMsg.innerHTML = "";
     } else {
       adressErrorMsg.innerHTML = "Entrez un prenom valide.";
@@ -333,9 +355,9 @@ function getForm() {
     validCity(this);
   });
   const validCity = function (ville) {
-    let cityErrorMsg = ville.nextElementSibling;
+    let cityErrorMsg = city.nextElementSibling;
 
-    if (regexName.test(ville.value)) {
+    if (regexName.test(city.value)) {
       cityErrorMsg.innerHTML = "";
     } else {
       cityErrorMsg.innerHTML = "Entrez un prenom valide.";
@@ -347,45 +369,45 @@ function getForm() {
     validEmail(this);
   });
   const validEmail = function (mail) {
-    let emailErrorMsg = mail.nextElementSibling;
+    let emailErrorMsg = email.nextElementSibling;
 
-    if (regexMail.test(mail.value)) {
+    if (regexMail.test(email.value)) {
       emailErrorMsg.innerHTML = "";
     } else {
       emailErrorMsg.innerHTML = "Entrez un prenom valide.";
       emailErrorMsg.style.color = "red";
     }
   };
-}
-getForm();
+//}
+//getForm();
 const btn_commander = document.getElementById("order");
 
 //Ecouter le panier
 btn_commander.addEventListener("click", (event) => {
   event.preventDefault();
-  const prenom = document.getElementById("firstName");
-  const nom = document.getElementById("lastName");
-  const adresse = document.getElementById("address");
-  const ville = document.getElementById("city");
-  const mail = document.getElementById("email");
+  if(!firstName.value || !lastName.value || !address.value || !city.value || !email.value){
+    alert("Vous devez renseigner tous les champs !");
+    event.preventDefault();
+} 
+else{
   idProducts = [];
   for (let i = 0; i < produitLocalStorage.length; i++) {
     idProducts.push(produitLocalStorage[i].id);
   }
 
-  //console.log(idProducts);
+  console.log(idProducts);
 
   const form = {
     contact: {
-      firstName: prenom,
-      lastName: nom,
-      address: adresse,
-      city: ville,
-      email: mail,
+      firstName: firstName.value,
+      lastName: lastName.value,
+      address: address.value,
+      city: city.value,
+      email: email.value,
     },
     products: idProducts,
   };
-  //console.log(form);
+  console.log(form);
   fetch("http://localhost:3000/api/products/order", {
     method: "POST",
     body: JSON.stringify(form),
@@ -396,12 +418,15 @@ btn_commander.addEventListener("click", (event) => {
   })
     .then((response) => response.json())
     .then((data) => {
-      //console.log(data);
-      localStorage.clear("kanape");
+      console.log(data);
+      //localStorage.clear("kanape");
       localStorage.setItem("orderId", data.orderId);
+      
       document.location.href = "confirmation.html";
+    
     })
     .catch((err) => {
       alert("Problème avec fetch : " + err.message);
     });
+  }
 });

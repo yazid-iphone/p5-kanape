@@ -51,14 +51,14 @@ let cardsFetch = function () {
         if (
           quantiteSelected.value > 0 &&
           quantiteSelected.value <= 100 &&
-          quantiteSelected.value != 0
+          quantiteSelected.value != 0 &&
+          colorSelected.value !==""
         ) {
           //Recupération du choix de la couleur
           let couleur = colorSelected.value;
 
           //Recupération du choix de la quantité
           let quantite = quantiteSelected.value;
-          
 
           let produitList = {
             id: `${productId}`,
@@ -88,12 +88,14 @@ let cardsFetch = function () {
               (element) =>
                 element.id == produitList.id &&
                 element.couleur == produitList.couleur
+                
             );
 
             if (found) {
               let newQuantite =
                 parseInt(produitList.quantite) + parseInt(found.quantite);
               found.quantite = newQuantite;
+            
 
               localStorage.setItem(
                 "kanape",
@@ -116,8 +118,8 @@ let cardsFetch = function () {
             localStorage.setItem("kanape", JSON.stringify(produitLocalStorage));
             popupConfirmation();
           }
-        }else{
-          alert("veuiller choisir une qtt et une couleur")
+        } else {
+          alert("veuiller choisir une qtt et une couleur");
         }
         //localStorage.clear("kanape");
       });
