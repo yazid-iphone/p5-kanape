@@ -194,7 +194,7 @@ function getCart() {
               }else{
                 input.value = selectMyArticle.quantite;
               }
-              //window.location.reload();
+              window.location.reload();
             });
           })
         }
@@ -346,7 +346,7 @@ moreAndLess();*/
     if (regexName.test(address.value)) {
       adressErrorMsg.innerHTML = "";
     } else {
-      adressErrorMsg.innerHTML = "Entrez un prenom valide.";
+      adressErrorMsg.innerHTML = "Entrez uue adresse valide.";
       adressErrorMsg.style.color = "red";
     }
   };
