@@ -1,39 +1,33 @@
+//Initialisation du local storage
 let produitLocalStorage = JSON.parse(localStorage.getItem("Kanape"));
+// Récupération de la chaîne de requête dans l'URL du navigateur et Extraction de l'ID de l'URL
 let params = new URLSearchParams(window.location.search);
-//console.log(params)
 const productId = params.get("id");
-//console.log(productId)
 const colorSelected = document.querySelector("#colors");
 const quantiteSelected = document.querySelector("#quantity");
+// Si on a bien récupéré un id on récupère les données de l'API correspondant à cet id
 const urlProduct = `http://localhost:3000/api/products/${productId}`;
-//console.log(urlProduct);
 let cardsFetch = function () {
   fetch(urlProduct)
     .then((response) => response.json())
+    // Répartition des données de l'API dans le DOM
     .then((api) => {
       response = api;
-      console.log(api);
-      // get data img
-
+      // Insertion du data img
       let img = document.createElement("img");
       document.querySelector(".item__img").appendChild(img);
       img.src = api.imageUrl;
       img.alt = api.altTxt;
-
-      // Modification du titre "h1"
+      // Insertion du titre "h1"
       let name = document.getElementById("title");
       name.innerHTML = api.name;
-
-      // Modification du prix
+      // Insertion du prix
       let price = document.getElementById("price");
       price.innerHTML = api.price;
-
-      // Modification de la description
+      // Insertion de la description
       let description = document.getElementById("description");
       description.innerHTML = api.description;
-
       // Insertion des options de couleurs
-
       for (let colors of api.colors) {
         //console.log(colors);
         let color = document.createElement("option");
@@ -41,38 +35,27 @@ let cardsFetch = function () {
         color.value = colors;
         color.innerHTML = colors;
       }
-
-      //cardsFetch();
-      //function addToCart() {
+      //Gestion du panier
       let btn_envoyer = document.getElementById("addToCart");
-      console.log(btn_envoyer);
+      //Ecouter le panier avec 2 conditions couleur non nulle et quantité entre 1 et 100
       btn_envoyer.addEventListener("click", (e) => {
         e.preventDefault();
         if (
           quantiteSelected.value > 0 &&
           quantiteSelected.value <= 100 &&
           quantiteSelected.value != 0 &&
-          colorSelected.value !==""
+          colorSelected.value !== ""
         ) {
           //Recupération du choix de la couleur
           let couleur = colorSelected.value;
-
           //Recupération du choix de la quantité
           let quantite = quantiteSelected.value;
-
+          //Récupération des options de l'article à ajouter au panier
           let produitList = {
             id: `${productId}`,
             couleur: couleur,
             quantite: Number(quantite),
-            //prix: api.price,
-            //name: api.name,
-            //alt: api.altTxt,
-            //description: api.description,
-            //image: api.imageUrl,
           };
-
-          console.log(produitList);
-          produitLocalStorage = JSON.parse(localStorage.getItem("kanape"));
           //fenêtre pop-up
           const popupConfirmation = () => {
             if (
@@ -82,21 +65,19 @@ let cardsFetch = function () {
               window.location.href = "cart.html";
             }
           };
-
+          //Importation dans le local storage
+          //Si le panier comporte déjà au moins 1 article
           if (produitLocalStorage) {
             const found = produitLocalStorage.find(
               (element) =>
                 element.id == produitList.id &&
                 element.couleur == produitList.couleur
-                
             );
-
+            //SI PRODUIT AVEC MEME ID ET COULEUR AUGMENTER LA QUANTITE
             if (found) {
               let newQuantite =
                 parseInt(produitList.quantite) + parseInt(found.quantite);
               found.quantite = newQuantite;
-            
-
               localStorage.setItem(
                 "kanape",
                 JSON.stringify(produitLocalStorage)
@@ -105,13 +86,13 @@ let cardsFetch = function () {
               //SI PRODUIT AVEC MEME ID ET COULEUR AUGMENTER LA QUANTITE
             } else {
               produitLocalStorage.push(produitList);
-
               localStorage.setItem(
                 "kanape",
                 JSON.stringify(produitLocalStorage)
               );
               popupConfirmation();
             }
+            //Si le panier est vide
           } else {
             produitLocalStorage = [];
             produitLocalStorage.push(produitList);
@@ -121,10 +102,7 @@ let cardsFetch = function () {
         } else {
           alert("veuiller choisir une qtt et une couleur");
         }
-        //localStorage.clear("kanape");
       });
-      // }
     });
 };
-//localStorage.clear("kanape");
 cardsFetch();
