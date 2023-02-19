@@ -5,7 +5,7 @@ fetch("http://localhost:3000/api/products")
   .then((response) => response.json())
   .then((data) => {
     for (const listProducts of data) {
-      console.log(listProducts);
+      
       // on cré les éléments html manquants de la page index.html et on y insère les données de l'api
       // Insertion de l'élément "a"
       let newLink = document.createElement("a");

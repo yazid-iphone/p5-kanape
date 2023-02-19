@@ -1,10 +1,9 @@
 function confirme() {
+  // Sélection de l'élément html dans lequel on veut afficher le numéro de commande
   const node = localStorage.getItem("orderId");
-  console.log(node);
+  // On insère le numéro de commande dans le html
   const nodeId = document.getElementById("orderId");
-  console.log(orderId);
   nodeId.innerText = node;
   //localStorage.clear("orderId");
 }
-
 confirme();
