@@ -17,7 +17,7 @@ function getCart() {
         for (let i = 0; i < produitLocalStorage.length; i++) {
           // on récupère la couleur, la quantité et l'id de tous les produits contenus dans le localstorage et on les met dans des variables
           let colorPanier = produitLocalStorage[i].couleur;
-          let idPanier = produitLocalStorage[i].id;
+          let idPanier = produitLocalStorage[i]._id;
           let quantityPanier = produitLocalStorage[i].quantite;
           //on ne récupère que les données des canapés dont _id (de l'api) correspondent à l'id dans le localStorage
           let panier = data.find((element) => element._id == idPanier);
@@ -122,7 +122,7 @@ function getCart() {
           let newPrice = 0;
           // On fait une boucle sur le produitLocalStorage
           for (let m = 0; m < produitLocalStorage.length; m++) {
-            const idStorage = produitLocalStorage[m].id;
+            const idStorage = produitLocalStorage[m]._id;
             const quantityStorage = produitLocalStorage[m].quantite;
             // on vérifie si l'id correspond
             const findProducts = data.find(

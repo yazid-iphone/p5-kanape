@@ -52,7 +52,7 @@ let cardsFetch = function () {
           let quantite = quantiteSelected.value;
           //Récupération des options de l'article à ajouter au panier
           let produitList = {
-            id: `${productId}`,
+            _id: `${productId}`,
             couleur: couleur,
             quantite: Number(quantite),
           };
