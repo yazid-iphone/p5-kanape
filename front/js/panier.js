@@ -197,6 +197,7 @@ const city = document.getElementById("city");
 const email = document.getElementById("email");
 //Création des expressions régulières pour contrôler les infos entrées par l'utilisateur
 const regexName = /^[a-zA-Z-\s]+$/;
+const regexAddress = /^[a-zA-Z-\s]+[0-9]$/;
 const regexMail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 let form = document.querySelector(".cart__order__form");
 // Ecoute du contenu du champ "firstname",  et affichage d'un message si celui-ci n'est pas correct
@@ -231,7 +232,7 @@ form.address.addEventListener("change", function () {
 });
 const validAdress = function (adresse) {
   let adressErrorMsg = address.nextElementSibling;
-  if (regexName.test(address.value)) {
+  if (regexAddress.test(address.value)) {
     adressErrorMsg.innerHTML = "";
   } else {
     adressErrorMsg.innerHTML = "Entrez uue adresse valide.";
